@@ -42,20 +42,21 @@ public class CrawlUrl {
         return lst;
     }
 
-    public List<Data> getData(String url) throws IOException {
+    public void getData(String url) throws IOException {
         List<String> lstUrl = getUrl(url);
         List<Data> nd = new ArrayList<>();
         for(String s : lstUrl){
             Data data = new Data();
             Document doc = Jsoup.connect(s).get();
             Elements eleTitle = doc.select("#content #primary article header h1");
-            String title = eleTitle.attr("h1");
+            String title = eleTitle.text();
             Elements elem = doc.select("#content #primary article .entry-content");
             String content = elem.html();
-
+//            System.out.println(title);
             nd.add(new Data(title,content));
 
         }
-        return nd;
+        GenFile file = new GenFile();
+        file.genFile(nd);
     }
 }
